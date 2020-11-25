@@ -13,25 +13,21 @@ import { ApiService } from '../../services/api.service';
 export class BallResolver implements Resolve<any> {
   constructor(
     private _apiService: ApiService,
-    private state: StateService,
-    private store: StoreService,
-    private router: Router
   ) { }
 
   resolve(route: ActivatedRouteSnapshot) {
     return this._apiService
-    .getBallRandom().subscribe(
-      (e: BallRandom) => {
-        if(e.hex) {
-          this.state.setState({
+    .getBallRandom().
+      pipe(
+        map((e: BallRandom) => {
+          if(!e.hex) {
+            return EMPTY;
+          }
+          return {
             hex: e.hex,
-            position: this.store.setPosition(),
-          });
-        } else {
-          return EMPTY;
-        }
-        return e;
-      },
-    );
+            position: []
+          };
+        },)
+      )    
   }
 }

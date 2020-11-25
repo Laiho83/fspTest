@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { pluck, shareReplay, tap } from 'rxjs/operators';
-import { BallRandom, State } from './../models/ball.model';
+import { BehaviorSubject } from 'rxjs';
+import { State } from './../models/ball.model';
 import { ApiService } from './api.service';
 
 @Injectable()
@@ -21,8 +20,5 @@ export class StateService {
 
   setState(newState: State) {
     this.state.next(newState);
-  }
-
-  resetState(): void {
   }
 }

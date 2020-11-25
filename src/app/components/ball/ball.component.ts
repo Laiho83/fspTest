@@ -3,9 +3,9 @@ import { StoreService } from './../../services/store.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from './../../services/api.service';
 import { StateService } from './../../services/state.service';
-import { Observable, Subject } from 'rxjs';
-import { ActivationEnd } from '@angular/router';
+import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -24,14 +24,24 @@ export class BallComponent implements OnInit, OnDestroy {
   offset: string = `translate(${this.top}, ${this.left})`;
 
   constructor(
+    public route: ActivatedRoute,
     public api: ApiService,
     public state: StateService,
     public store: StoreService,
   ) {
-  
+    
   }
 
   ngOnInit(): void {
+    this.route.data.subscribe(( {ballData} ) => {
+      this.store.setActive(ballData);
+      this.getBallState(ballData);
+    })
+
+    this.moveBall();
+  }
+
+  moveBall() {
     this.state.getState()
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(e => {

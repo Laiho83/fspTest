@@ -1,7 +1,5 @@
-import { Injectable, OnInit } from '@angular/core';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { pluck, shareReplay, tap } from 'rxjs/operators';
-import { BallRandom, State } from './../models/ball.model';
+import { Injectable } from '@angular/core';
+import { State } from './../models/ball.model';
 import { ApiService } from './api.service';
 import { StateService } from './state.service';
 

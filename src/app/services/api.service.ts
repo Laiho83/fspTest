@@ -23,7 +23,7 @@ export class ApiService {
 
   getBallRandom() {
     return this.http.get(APP_CONFIG.apiurl).pipe(
-      map((e: any) => {
+      map((e: BallRandom) => {
         return new BallRandom(e);
       }),
       catchError(err => {
