@@ -1,0 +1,28 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { pluck, shareReplay, tap } from 'rxjs/operators';
+import { BallRandom, State } from './../models/ball.model';
+import { ApiService } from './api.service';
+
+@Injectable()
+export class StateService {
+  
+  private state: BehaviorSubject<State> = new BehaviorSubject<State>({
+    hex: '',
+    position: [],
+  });
+
+  constructor(public api: ApiService) {
+  }
+
+  getState(): BehaviorSubject<State> {
+    return this.state;
+  }
+
+  setState(newState: State) {
+    this.state.next(newState);
+  }
+
+  resetState(): void {
+  }
+}

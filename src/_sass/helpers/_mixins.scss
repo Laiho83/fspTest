@@ -1,0 +1,22 @@
+// ** MIXINS **//
+
+/**
+ * -- flex
+ */
+
+
+/**
+ * Flex basic mixin: Basic flex based grid with margin gutter. Ads width to the column and sets the grid.
+ * USAGE: @include flex();
+ */
+
+@mixin flex(
+  $direction: row,
+  $justify-content: flex-start,
+  $align-items: center
+) {
+  display: flex;
+  flex-flow: $direction wrap;
+  align-items: $align-items;
+  justify-content: $justify-content;
+}

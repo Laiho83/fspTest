@@ -1,0 +1,40 @@
+// -- VARIABLES -- //
+
+// ** COLORS
+$black-color: #000000;
+$white-color: #ffffff;
+
+// Main colors
+$primary-color: #121212;
+
+// Text colors
+$text-color: $black-color;
+$heading-color: $white-color;
+$link-color: #29c30b;
+
+// ** SPACING
+$grid-gutter: 25px;
+
+// ** HEADER HEIGHTS
+$header-height: 55px;
+
+// ** TYPOGRAPHY
+// -- font family
+$font-family-base: 'Roboto', sans-serif;
+$font-family-header: 'RobotoMedium', sans-serif;
+
+// -- base font
+$em-base: 16px;
+$base-line-height: 1.4em;
+
+// -- headings
+$h1-size: 33px;
+$h1-line: 1.4em;
+$h2-size: 24px;
+$h2-line: 1.4em;
+
+// **BASIC WIDTHS
+$xl-width: 1200px;
+$lg-width: 940px;
+$md-width: 720px;
+$sm-width: 480px;

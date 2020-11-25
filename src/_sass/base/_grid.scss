@@ -1,0 +1,10 @@
+// -- GRID and SPACINGS-- //
+
+// ** Containers
+.container {
+  position: relative;
+  width: 100%;
+  max-width: $xl-width;
+  margin: 0 auto;
+  padding: 0 20px;
+}

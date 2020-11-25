@@ -1,0 +1,53 @@
+// -- GENERAL -- //
+
+// ** html, body
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-size: $em-base;
+  line-height: $base-line-height;
+  font-family: $font-family-base, 'fallback';
+  color: $text-color;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+// ** TYPOGRAPHY
+h1 {
+  font-size: 24px;
+  line-height: $h1-line;
+  color: $heading-color;
+  font-family: $font-family-header, 'fallback';
+  font-weight: 400;
+}
+h2 {
+  margin: 0 0 20px;
+  font-size: $h2-size;
+  line-height: $h2-line;
+  color: $heading-color;
+  font-family: $font-family-header, 'fallback';
+  font-weight: 400;
+}
+p {
+  margin: 0 0 15px;
+  letter-spacing: 1.1px;
+  font-weight: 300;
+}
+
+ul {
+  list-style: none;
+}
+
+// ** IMAGES
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
