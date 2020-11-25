@@ -1,10 +1,10 @@
 import { BallRandom } from './../../models/ball.model';
 import { StoreService } from './../../services/store.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ApiService } from './../../services/api.service';
 import { StateService } from './../../services/state.service';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, throttleTime } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 
 
@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './ball.component.html',
   styleUrls: ['./ball.component.scss'],
 })
-export class BallComponent implements OnInit, OnDestroy {
+export class BallComponent implements OnDestroy {
 
   private unsubscribe$ = new Subject;
 
@@ -22,6 +22,7 @@ export class BallComponent implements OnInit, OnDestroy {
   left: string = '0%';
   background: string = '';
   offset: string = `translate(${this.top}, ${this.left})`;
+  clickAction: Subject<boolean> = new Subject();
 
   constructor(
     public route: ActivatedRoute,
@@ -29,21 +30,30 @@ export class BallComponent implements OnInit, OnDestroy {
     public state: StateService,
     public store: StoreService,
   ) {
-    
-  }
-
-  ngOnInit(): void {
     this.route.data.subscribe(( {ballData} ) => {
       this.store.setActive(ballData);
       this.getBallState(ballData);
     })
-
+    this.clickEvent();
     this.moveBall();
+  }
+
+  clickEvent() {
+    this.clickAction
+    .pipe(
+      takeUntil(this.unsubscribe$),
+      throttleTime(1300),
+    )
+    .subscribe(e => {
+      this.store.getStore().length < 4 ? this.getBallData() : this.getBallState(this.store.getStoreNext());
+    });
   }
 
   moveBall() {
     this.state.getState()
-    .pipe(takeUntil(this.unsubscribe$))
+    .pipe(
+      takeUntil(this.unsubscribe$)      
+    )
     .subscribe(e => {
       this.store.setActive(e);
       this.setBallData(e);
@@ -51,12 +61,14 @@ export class BallComponent implements OnInit, OnDestroy {
   }
 
   ballAction() {
-    this.store.getStore().length < 4 ? this.getBallData() : this.getBallState(this.store.getStoreNext());
+    this.clickAction.next(true);
   }
 
   getBallData() {
     this.api.getBallRandom()
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(
+        takeUntil(this.unsubscribe$)
+      )
       .subscribe((e: BallRandom) => {
         this.getBallState(e);
     });
