@@ -36,10 +36,7 @@ export class BallComponent implements OnInit, OnDestroy {
     .pipe(takeUntil(this.unsubscribe$))
     .subscribe(e => {
       this.store.setActive(e);
-      this.top = `${this.store.getActive().position[0] * 100}%`;
-      this.left = `${this.store.getActive().position[1] * 100}%`;
-      this.background = `${this.store.getActive().hex}`;
-      this.offset = `translate(-${this.left}, -${this.top})`
+      this.setBallData(e);
     });
   }
 
@@ -62,8 +59,15 @@ export class BallComponent implements OnInit, OnDestroy {
     });
   }
 
+  setBallData(e) {    
+    this.top = `${this.store.getActive().position[0] * 100}%`;
+    this.left = `${this.store.getActive().position[1] * 100}%`;
+    this.background = `${this.store.getActive().hex}`;
+    this.offset = `translate(-${this.left}, -${this.top})`
+  }
+
   ngOnDestroy() {
     this.unsubscribe$.next()
     this.unsubscribe$.complete()
-}
+  }
 }
