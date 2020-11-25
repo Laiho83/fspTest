@@ -10,8 +10,6 @@ import { ApiService } from './services/api.service';
 import { ColrInterceptor } from './services/colr.interceptor';
 import { StateService } from './services/state.service';
 import { StoreService } from './services/store.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
 
 @NgModule({
   declarations: [
@@ -22,7 +20,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    BrowserAnimationsModule
   ],
   providers: [
     ApiService,
