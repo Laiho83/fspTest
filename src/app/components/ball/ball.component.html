@@ -1,4 +1,5 @@
-<div class="ball-wrapper" (click)="ballAction()">
-  <div class="ball" [ngStyle]="{'top': top, 'left': left, 'background': background, 'transform': offset}"></div>
-  
-</div>
+<ng-container *ngIf="background">
+  <div class="ball-wrapper" (click)="ballAction()">  
+      <div class="ball" [ngStyle]="{'top': top, 'left': left, 'background': background, 'transform': offset}"></div>
+  </div>
+</ng-container>

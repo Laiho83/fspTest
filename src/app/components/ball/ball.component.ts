@@ -1,7 +1,11 @@
+import { BallRandom } from './../../models/ball.model';
 import { StoreService } from './../../services/store.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ApiService } from './../../services/api.service';
 import { StateService } from './../../services/state.service';
+import { Observable, Subject } from 'rxjs';
+import { ActivationEnd } from '@angular/router';
+import { takeUntil } from 'rxjs/operators';
 
 
 
@@ -10,7 +14,9 @@ import { StateService } from './../../services/state.service';
   templateUrl: './ball.component.html',
   styleUrls: ['./ball.component.scss'],
 })
-export class BallComponent implements OnInit {
+export class BallComponent implements OnInit, OnDestroy {
+
+  private unsubscribe$ = new Subject;
 
   top: string = '0%';
   left: string = '0%';
@@ -22,11 +28,13 @@ export class BallComponent implements OnInit {
     public state: StateService,
     public store: StoreService,
   ) {
-    this.ballAction();
+  
   }
 
   ngOnInit(): void {
-    this.state.getState().subscribe(e => {
+    this.state.getState()
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe(e => {
       this.store.setActive(e);
       this.top = `${this.store.getActive().position[0] * 100}%`;
       this.left = `${this.store.getActive().position[1] * 100}%`;
@@ -40,8 +48,10 @@ export class BallComponent implements OnInit {
   }
 
   getBallData() {
-    this.api.getBallRandom().subscribe((e: any) => {
-      this.getBallState(e);
+    this.api.getBallRandom()
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((e: BallRandom) => {
+        this.getBallState(e);
     });
   }
 
@@ -50,6 +60,10 @@ export class BallComponent implements OnInit {
       hex: e.hex,
       position: this.store.setPosition(),
     });
-
   }
+
+  ngOnDestroy() {
+    this.unsubscribe$.next()
+    this.unsubscribe$.complete()
+}
 }

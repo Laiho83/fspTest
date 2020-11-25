@@ -10,6 +10,7 @@ import { ApiService } from './services/api.service';
 import { ColrInterceptor } from './services/colr.interceptor';
 import { StateService } from './services/state.service';
 import { StoreService } from './services/store.service';
+import { BallResolver } from './components/ball/ball.resolver';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { StoreService } from './services/store.service';
     ApiService,
     StateService,
     StoreService,
+    BallResolver,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ColrInterceptor,

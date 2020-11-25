@@ -27,7 +27,7 @@ export class ApiService {
         return new BallRandom(e);
       }),
       catchError(err => {
-        console.log('Error API getArtists ', err.message);
+        console.log('Error API ', err.message);
         return of([]);
       })
     );
