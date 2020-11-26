@@ -11,6 +11,11 @@ export class StateService {
     position: [],
   });
 
+  private activeState: BehaviorSubject<State> = new BehaviorSubject<State>({
+    hex: '',
+    position: [],
+  });
+
   constructor(public api: ApiService) {
   }
 
@@ -20,5 +25,13 @@ export class StateService {
 
   setState(newState: State) {
     this.state.next(newState);
+  }
+
+  getActiveState(): BehaviorSubject<State> {
+    return this.activeState;
+  }
+
+  setActiveState(newActiveState: State) {
+    this.activeState.next(newActiveState);
   }
 }

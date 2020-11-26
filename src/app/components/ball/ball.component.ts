@@ -25,17 +25,21 @@ export class BallComponent implements OnDestroy {
     public api: ApiService,
     public stateService: StateService,
     public storeService: StoreService,
-    public uiServis: UiControlService,
+    public uiService: UiControlService,
   ) {
     this.route.data.subscribe(( {ballData} ) => {
-      this.storeService.setActive(ballData);
-      this.uiServis.setActiveControls(ballData);
-      this.getBallState(ballData);
+      this.stateService.setActiveState(ballData)
+      this.setBallState(ballData);
     })
     this.clickEvent();
     this.moveBall();
   }
 
+  /**
+   * Tiggered on click: 
+   *  Throttle time to prevent double clicks.
+   *  Calling the colr.spi or retriving data from store.
+  */
   clickEvent() {
     this.clickAction
     .pipe(
@@ -43,47 +47,64 @@ export class BallComponent implements OnDestroy {
       throttleTime(1300),
     )
     .subscribe(e => {
-      this.storeService.getStore().length < 4 ? this.getBallData() : this.getBallState(this.storeService.getStoreNext());
+      this.storeService.getStore().length < 4 ? this.getBallData() : this.setBallState(this.storeService.getStoreNext());
     });
   }
 
+  /**
+   * Moves the ball: sets the data for DOM manipulation.
+  */
   moveBall() {
     this.stateService.getState()
     .pipe(
       takeUntil(this.unsubscribe$)      
     )
     .subscribe(e => {
-      this.storeService.setActive(e);
-      this.uiServis.setActiveControls(e);
+      this.stateService.setActiveState(e)
       this.setUiControls(e);
     });
   }
 
+  /**
+   * Tiggered on click event: 
+  */
   ballAction() {
     this.clickAction.next(true);
   }
 
+  /**
+   * Retrivies ball data from colr.api and calls ball state.
+  */
   getBallData() {
     this.api.getBallRandom()
       .pipe(
         takeUntil(this.unsubscribe$)
       )
       .subscribe((e: BallRandom) => {
-        this.getBallState(e);
+        this.setBallState(e);
     });
   }
 
-  getBallState(e) {
+  /**
+   * Sets the next state of the ball
+  */
+  setBallState(e) {
     this.stateService.setState({
       hex: e.hex,
-      position: this.storeService.setPosition(),
+      position: this.uiService.setPosition(),
     });
   }
 
+  /**
+   * Sets all data we need to move the ball: top, left, background, offset
+  */
   setUiControls(e) {
-    this.uiControls = this.uiServis.getActiveControls();
+    this.uiControls = this.uiService.getActiveControls();
   }
 
+  /**
+   * Unsebscribe from subscriptions.
+  */
   ngOnDestroy() {
     this.unsubscribe$.next()
     this.unsubscribe$.complete()
