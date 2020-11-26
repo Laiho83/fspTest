@@ -14,7 +14,11 @@ export class StoreService implements OnDestroy {
   private active: State;
 
   constructor(public api: ApiService, private state: StateService, private uiService: UiControlService) {
-    this.state.getState().subscribe(data => {
+    this.state.getState()
+    .pipe(
+      takeUntil(this.unsubscribe$),
+    )
+    .subscribe(data => {
       if (data.hex) {
         this.store.push(data)
       }

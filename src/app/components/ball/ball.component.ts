@@ -27,7 +27,11 @@ export class BallComponent implements OnDestroy {
     public storeService: StoreService,
     public uiService: UiControlService,
   ) {
-    this.route.data.subscribe(( {ballData} ) => {
+    this.route.data
+    .pipe(
+      takeUntil(this.unsubscribe$),
+    )
+    .subscribe(( {ballData} ) => {
       this.stateService.setActiveState(ballData)
       this.setBallState(ballData);
     })
