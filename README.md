@@ -3,7 +3,7 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.2.
 
 ## Production
-This is the link to working version: [https://laiho83.github.io/gliSpotify/home](https://laiho83.github.io/fspTest/)
+This is the link to working version: [https://laiho83.github.io/fspTest/](https://laiho83.github.io/fspTest/)
 
 ## Steps to run the app
 
