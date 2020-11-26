@@ -11,7 +11,7 @@ This is the link to working version: [https://laiho83.github.io/gliSpotify/home]
 2. In the root folder run: `yarn install`
 3. Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
 
-## Folder structure
+## App overview
 **Configuration file**
 - AppConfig hold the information about the colour app for fetching random colours.
 
