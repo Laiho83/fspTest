@@ -3,6 +3,7 @@ import { State } from './../models/ball.model';
 import { ApiService } from './api.service';
 import { StateService } from './state.service';
 
+
 @Injectable()
 export class StoreService {
   private store: State[] = [];
@@ -20,19 +21,19 @@ export class StoreService {
     return this.store;
   }
 
+  getStoreNext() {
+    return this.store.filter(e => {
+      const temp = this.calcPosition();
+      return e.position[0] == temp[0] && e.position[1] == temp[1];
+    })[0]; 
+  }
+
   setActive(active) {
     this.active = active;
   }
 
   getActive() {
     return this.active;
-  }
-
-  getStoreNext() {    
-    return this.store.filter(e => {
-      const temp = this.calcPosition();
-      return e.position[0] == temp[0] && e.position[1] == temp[1];
-    })[0]; 
   }
 
   setPosition() {

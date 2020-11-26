@@ -1,12 +1,12 @@
-import { BallRandom } from './../../models/ball.model';
-import { StoreService } from './../../services/store.service';
+import { ActivatedRoute } from '@angular/router';
 import { Component, OnDestroy } from '@angular/core';
+import { BallRandom, UIControls } from './../../models/ball.model';
+import { StoreService } from './../../services/store.service';
 import { ApiService } from './../../services/api.service';
 import { StateService } from './../../services/state.service';
+import { UiControlService } from './../../services/uiControl.service';
 import { Subject } from 'rxjs';
 import { takeUntil, throttleTime } from 'rxjs/operators';
-import { ActivatedRoute } from '@angular/router';
-
 
 
 @Component({
@@ -17,21 +17,19 @@ import { ActivatedRoute } from '@angular/router';
 export class BallComponent implements OnDestroy {
 
   private unsubscribe$ = new Subject;
-
-  top: string = '0%';
-  left: string = '0%';
-  background: string = '';
-  offset: string = `translate(${this.top}, ${this.left})`;
-  clickAction: Subject<boolean> = new Subject();
+  private clickAction: Subject<boolean> = new Subject();
+  public uiControls: UIControls;
 
   constructor(
     public route: ActivatedRoute,
     public api: ApiService,
-    public state: StateService,
-    public store: StoreService,
+    public stateService: StateService,
+    public storeService: StoreService,
+    public uiServis: UiControlService,
   ) {
     this.route.data.subscribe(( {ballData} ) => {
-      this.store.setActive(ballData);
+      this.storeService.setActive(ballData);
+      this.uiServis.setActiveControls(ballData);
       this.getBallState(ballData);
     })
     this.clickEvent();
@@ -45,18 +43,19 @@ export class BallComponent implements OnDestroy {
       throttleTime(1300),
     )
     .subscribe(e => {
-      this.store.getStore().length < 4 ? this.getBallData() : this.getBallState(this.store.getStoreNext());
+      this.storeService.getStore().length < 4 ? this.getBallData() : this.getBallState(this.storeService.getStoreNext());
     });
   }
 
   moveBall() {
-    this.state.getState()
+    this.stateService.getState()
     .pipe(
       takeUntil(this.unsubscribe$)      
     )
     .subscribe(e => {
-      this.store.setActive(e);
-      this.setBallData(e);
+      this.storeService.setActive(e);
+      this.uiServis.setActiveControls(e);
+      this.setUiControls(e);
     });
   }
 
@@ -75,17 +74,14 @@ export class BallComponent implements OnDestroy {
   }
 
   getBallState(e) {
-    this.state.setState({
+    this.stateService.setState({
       hex: e.hex,
-      position: this.store.setPosition(),
+      position: this.storeService.setPosition(),
     });
   }
 
-  setBallData(e) {    
-    this.top = `${this.store.getActive().position[0] * 100}%`;
-    this.left = `${this.store.getActive().position[1] * 100}%`;
-    this.background = `${this.store.getActive().hex}`;
-    this.offset = `translate(-${this.left}, -${this.top})`
+  setUiControls(e) {
+    this.uiControls = this.uiServis.getActiveControls();
   }
 
   ngOnDestroy() {

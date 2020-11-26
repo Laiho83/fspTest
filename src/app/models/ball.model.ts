@@ -10,3 +10,9 @@ export interface State {
   position?: number[];
 }
 
+export interface UIControls {
+  top: string;
+  left: string;
+  background: string;
+  offset: string;
+}
