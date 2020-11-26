@@ -29,6 +29,7 @@ This is the link to working version: [https://laiho83.github.io/gliSpotify/home]
 - **ColrInterceptor** For intercepting the request as we have to change request header, due to browser response caching
 - **StateService** Handles the app state via BehaviorSubject 
 - **StoreService** Handles array of data of all the states as well as methods for calculating the position of the ball. After we have all the data, there is no need for further request to the colour API as everything is stored in the `store` variable.
+- **UiControlService** Handles the data we need for DOM manipulation.
 
 **Styling**
 - Scss is used with the following structure:
